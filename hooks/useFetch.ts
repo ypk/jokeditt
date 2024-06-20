@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import useSWR, { mutate } from 'swr';
-import { fetchData } from '@/utils/fetchData';
+import { filterData, fetchData } from '@/utils';
 import { Response } from '@/types';
 import Constants from 'expo-constants';
 
@@ -20,9 +20,10 @@ export function useFetch() {
         if (response) {
             setIsLoading(false);
             setIsError(false);
-            setPosts(response.data);
-            setAfter(response.after);
-            setBefore(response.before);
+            const filteredResponse = filterData(response);
+            setPosts(filteredResponse.data);
+            setAfter(filteredResponse.after);
+            setBefore(filteredResponse.before);
         }
         if (error) {
             setIsLoading(false);
@@ -45,12 +46,14 @@ export function useFetch() {
                 }
             });
 
-            setPosts((prevPosts) => [...prevPosts, ...updatedResponse.data]);
-            setAfter(updatedResponse.after);
-            setBefore(updatedResponse.before);
+            const filteredUpdatedResponse = filterData(updatedResponse);
+
+            setPosts((prevPosts) => [...prevPosts, ...filteredUpdatedResponse.data]);
+            setAfter(filteredUpdatedResponse.after);
+            setBefore(filteredUpdatedResponse.before);
             setCount((prevCount) => prevCount + 25);
 
-            await mutate(API_URL, { ...updatedResponse, posts: [...posts, ...updatedResponse.posts] }, false);
+            await mutate(API_URL, { ...filteredUpdatedResponse, posts: [...posts, ...filteredUpdatedResponse.posts] }, false);
         } catch (error) {
             console.error('Error loading more data:', error);
             throw new Error('Error loading more data');
