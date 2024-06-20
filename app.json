@@ -31,6 +31,9 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "jokeditt" : {
+      "url": "http://old.reddit.com/r/jokes.json"
     }
   }
 }
