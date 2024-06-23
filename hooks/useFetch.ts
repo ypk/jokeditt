@@ -5,15 +5,13 @@ import { Response } from '@/types';
 import Constants from 'expo-constants';
 
 export function useFetch() {
-
     const API_URL = Constants.expoConfig.jokeditt.url;
     const { data: response, error } = useSWR<Response>(API_URL, fetchData);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
     const [posts, setPosts] = useState<any[]>([]);
     const [count, setCount] = useState(0);
-    const [after, setAfter] = useState<string | null>(null);
-    const [before, setBefore] = useState<string | null>(null);
+    const [after, setAfter] = useState(null);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
 
     useEffect(() => {
@@ -23,7 +21,6 @@ export function useFetch() {
             const filteredResponse = filterData(response);
             setPosts(filteredResponse.data);
             setAfter(filteredResponse.after);
-            setBefore(filteredResponse.before);
         }
         if (error) {
             setIsLoading(false);
@@ -31,8 +28,6 @@ export function useFetch() {
         }
     }, [response, error]);
 
-
-    
     const loadMore = async () => {
         if (!after) return;
 
@@ -50,7 +45,6 @@ export function useFetch() {
 
             setPosts((prevPosts) => [...prevPosts, ...filteredUpdatedResponse.data]);
             setAfter(filteredUpdatedResponse.after);
-            setBefore(filteredUpdatedResponse.before);
             setCount((prevCount) => prevCount + 25);
 
             await mutate(API_URL, { ...filteredUpdatedResponse, posts: [...posts, ...filteredUpdatedResponse.posts] }, false);
