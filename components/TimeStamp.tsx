@@ -10,7 +10,7 @@ const TimeStamp: React.FC<TimeStampProps> = ({ timestamp }) => {
 
 const styles = StyleSheet.create({
     timeStamp: {
-        fontSize: 12,
+        fontSize: 14,
         color: 'gray',
     },
 });

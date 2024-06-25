@@ -14,10 +14,13 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
 
   return (
     <View style={styles.card}>
-      <ScrollView contentContainerStyle={styles.postBody}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.selftext}>{selftext}</Text>
-      </ScrollView>
+      
+      <View style={styles.scrollViewContainer}>
+        <ScrollView contentContainerStyle={styles.postBody}>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.selftext}>{selftext}</Text>
+        </ScrollView>
+      </View>
 
       <LinearGradient
         colors={['#ffffff', '#e8e8e8']}
@@ -29,11 +32,11 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
         </View>
         <View style={styles.postStats}>
           <View style={styles.iconContainer}>
-            <Ionicons name="heart-sharp" color="#f00" size={24} />
+            <Ionicons name="heart-sharp" color="#f00" size={30} />
             <Text style={styles.iconText}>{ups}</Text>
           </View>
           <View style={styles.iconContainer}>
-            <Ionicons name="chatbox-ellipses-outline" color="#000" size={24} />
+            <Ionicons name="chatbox-ellipses-outline" color="#000" size={30} />
             <Text style={styles.iconText}>{num_comments}</Text>
           </View>
         </View>
@@ -54,27 +57,35 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  scrollViewContainer: {
+    minHeight: (Dimensions.get("screen").height - 75 ) /2,
+    flex: 1,
+    flexGrow: 1,
+  },
   postBody: {
+    flex: 1,
     flexGrow: 1,
     padding: 16,
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginTop: 10,
+    marginBottom: 18,
   },
   selftext: {
-    fontSize: 16,
-    marginBottom: 10,
+    fontSize: 18,
+    marginVertical: 10,
   },
   postFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 10,
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
     borderTopWidth: 1,
     borderTopColor: '#e8e8e8',
     borderRadius: 8,
+    height: 75
   },
   postInfo: {
     flexDirection: 'column',
@@ -83,18 +94,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   author: {
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
   },
   iconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 10,
   },
   iconText: {
     marginHorizontal: 8,
-    fontSize: 12,
+    fontSize: 18,
   },
 });
 

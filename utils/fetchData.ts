@@ -41,7 +41,7 @@ export async function fetchData(fetchParams: FetchConfig | string): Promise<Resp
         }
 
     } catch (error) {
-        console.error('Fetch error: Failed to fetch data ', error);
-        throw new Error('Failed to fetch data');
+        console.error(`Fetch error at URL: ${url} | Error: ${error.message}`);
+        throw new Error(`Failed to fetch data from ${url} | ${error.message}`);
     }
 }

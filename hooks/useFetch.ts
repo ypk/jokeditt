@@ -25,6 +25,7 @@ export function useFetch() {
         if (error) {
             setIsLoading(false);
             setIsError(true);
+            console.error(`Initial fetch error: ${error.message} | ${error}`);
         }
     }, [response, error]);
 
@@ -42,15 +43,19 @@ export function useFetch() {
             });
 
             const filteredUpdatedResponse = filterData(updatedResponse);
-
+ 
             setPosts((prevPosts) => [...prevPosts, ...filteredUpdatedResponse.data]);
             setAfter(filteredUpdatedResponse.after);
             setCount((prevCount) => prevCount + 25);
-
-            await mutate(API_URL, { ...filteredUpdatedResponse, posts: [...posts, ...filteredUpdatedResponse.posts] }, false);
+            try {
+                await mutate(API_URL, { ...filteredUpdatedResponse, posts: [...posts, ...filteredUpdatedResponse.posts] }, false);
+            } catch (mutateError) {
+                console.error(`Error in mutate function | ${mutateError}`);
+                throw new Error(`Failed to update posts | ${mutateError}`);
+            } 
         } catch (error) {
-            console.error('Error loading more data:', error);
-            throw new Error('Error loading more data');
+            console.error(`Error loading more data | ${error}`);
+            throw new Error(`Failed to load more data | ${error}`);
         } finally {
             setIsLoadingMore(false);
         }
